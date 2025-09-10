@@ -1,0 +1,1 @@
+{"name":"Local: A_plus_B_problem","url":"/workspaces/leetcode-acm/basics/A_plus_B_problem.py","tests":[{"id":1757522235017,"input":"3 5","output":"8"},{"id":1757522744204,"input":"7 10","output":"17"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/leetcode-acm/basics/A_plus_B_problem.py","group":"local","local":true}

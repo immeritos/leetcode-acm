@@ -1,0 +1,1 @@
+{"name":"Local: A_plus_B_plus_C_multiline","url":"/workspaces/leetcode-acm/basics/A_plus_B_plus_C_multiline.py","tests":[{"id":1757523642633,"input":"1 2 3\n4 5 6 7\n8 9","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/leetcode-acm/basics/A_plus_B_plus_C_multiline.py","group":"local","local":true}
