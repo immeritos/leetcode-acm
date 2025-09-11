@@ -86,6 +86,3 @@ print(position)  # 输出 3
 
 - bisect_left：查找目标值的第一个不小于目标值的位置。
 - bisect_right：查找目标值的第一个大于目标值的位置。
-
-```python
-```
