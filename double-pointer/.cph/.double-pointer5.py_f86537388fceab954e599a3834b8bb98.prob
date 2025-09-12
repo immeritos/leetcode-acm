@@ -1,0 +1,1 @@
+{"name":"Local: double-pointer5","url":"/workspaces/leetcode-acm/double-pointer/double-pointer5.py","tests":[{"id":1757668269586,"input":"1 2 3 4\n2 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/leetcode-acm/double-pointer/double-pointer5.py","group":"local","local":true}
