@@ -1,0 +1,1 @@
+{"name":"Local: bfs5","url":"/workspaces/leetcode-acm/bfs/bfs5.py","tests":[{"id":1757782598232,"input":"4 4\n1 2 -1 1\n2 0 2 0\n2 2 -1 2\n1 2 1 1","output":""},{"id":1757782724580,"input":"2 3\n0 -1 1\n1 -1 2","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/leetcode-acm/bfs/bfs5.py","group":"local","local":true}
