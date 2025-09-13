@@ -1,33 +1,46 @@
+"""
+Tazi has a tree of n nodes, with node 1 being the root. Each node has a weight, ai. 
+If the weight of any node is greater than or equal to the sum of the weights of its children, then the tree is a magical tree. 
+During each operation, Tazi selects a node and increases its weight by one. 
+What is the minimum number of operations Tazi needs to perform to transform this tree into a magical tree?
+"""
+
 import sys
-sys.setrecursionlimit(20000)
+sys.setrecursionlimit(1_000_000)
+input = sys.stdin.readline
 
-def dfs(node, father, adj, a):
-    total_add = 0
-    total_sum = 0
+def main():
+    n = int(input().strip())
+    arr = list(map(int, input().split()))
+    a = [0] + arr
     
-    for neighbour in adj[node]:
-        if neighbour != father:
-            child_add, child_sum = dfs(neighbour, node, adj, a)
-            total_add += child_add
-            total_sum += child_sum
-            
-    if a[node] < total_sum:
-        total_add += total_sum - a[node]
-        a[node] = total_sum
+    adj = [[] for _ in range(n + 1)]
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        adj[u].append(v)
+        adj[v].append(u)
+
+    def dfs(u, p):
+        ops_u = 0
+        children_sum = 0
+        for v in adj[u]:
+            if v == p:
+                continue
+            ops_v, val_v = dfs(v, u)
+            ops_u += ops_v
+            children_sum += val_v
         
-    return total_add, a[node]
+        if a[u] < children_sum:
+            deficit = children_sum - a[u]
+            ops_u += deficit
+            val_u = children_sum
+        else:
+            val_u = a[u]
+            
+        return ops_u, val_u        
+        
+    ops, _ = dfs(1, 0)
+    print(ops)
 
-def solve(n, a, edges):
-    adj = [[] for _ in range(n)]
-    for u, v in edges:
-        adj[u-1].append(v-1)
-        adj[v-1].append(u-1)
-    
-    result, _ = dfs(0, -1, adj, a)
-    return result
-
-n = int(input())
-a = list(map(int, input().split()))
-edges = [tuple(map(int, input().split()))]
-
-print(solve(n, a, edges))
+if __name__ == "__main__":
+    main()

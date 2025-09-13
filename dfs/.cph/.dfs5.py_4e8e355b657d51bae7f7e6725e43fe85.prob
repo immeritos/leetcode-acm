@@ -1,0 +1,1 @@
+{"name":"Local: dfs5","url":"/workspaces/leetcode-acm/dfs/dfs5.py","tests":[{"id":1757753737690,"input":"3\n1 1\n1 1 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspaces/leetcode-acm/dfs/dfs5.py","group":"local","local":true}

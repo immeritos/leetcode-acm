@@ -1,27 +1,50 @@
-n, k = map(int, input().split())
-vis = [[False] * n for _ in range(n)]
+"""
+In Tetris, there are only 1 large blocks, each made up of four smaller square blocks. 
+Now, calculate the maximum number of large blocks that can be placed within a given grid size. 
+The specific rules are as follows:
+1. The grid is a square grid.
 
-for _ in range(k):
-    x, y = map(int, input().split())
-    vis[x][y] = True
-    
-def dfs(x, y):
-    if x >= n-1:
-        return 0
-    
-    next_x, next_y = (x + 1, 0) if y == n - 2 else (x, y + 1)
-    
-    res = 0
-    
-    if x + 1 < n and y + 1 < n and not vis[x][y] and not vis[x + 1][y] and not vis[x][y+1] and not vis[x+1][y+1]:
-        vis[x][y] = vis[x + 1]vis[y] = vis[x][y + 1] = vis[x + 1][y + 1]
-        
-        res = max(res, dfs(next_x, next_y) + 1)
-        
-        vis[x][y] = vis[x+1][y] = vis[x][y+1] = vis[x+1][y+1] = False
-        
-    res = max(res, dfs(next_x, next_y))
-    
-    return res
+2. Blocks cannot overlap.
 
-print(dfs(0, 0))
+3. Blocks cannot extend beyond the grid boundaries.
+
+4. Blocks cannot be placed in certain positions within the grid.
+"""
+
+import sys
+sys.setrecursionlimit(1_000_000)
+input = sys.stdin.readline()
+
+def main():
+    n, k = map(int, input().split())
+    
+    vis = [[False] * n for _ in range(n)]
+    for _ in range(k):
+        x, y = map(int, input().split())
+        vis[x][y] = True
+    
+    total_pos = (n - 1) * (n - 1)
+    
+    def dfs(idx):
+        if idx == total_pos:
+            return 0
+        
+        r = idx // (n - 1)
+        c = idx % (n - 1)
+        
+        best = dfs(idx + 1)
+        
+        if (not vis[r][c] and not vis[r+1][c] and
+            not vis[r][c+1] and not vis[r+1][c+1]):
+            vis[r][c] = vis[r+1][c] = vis[r][c+1] = vis[r+1][c+1] = True
+            
+            best = max(best, 1 + dfs(idx + 1))
+            
+            vis[r][c] = vis[r+1][c] = vis[r][c+1] = vis[r+1][c+1] = False
+        
+        return best
+    
+    print(dfs(0))
+    
+if __name__ == "__main__":
+    main()

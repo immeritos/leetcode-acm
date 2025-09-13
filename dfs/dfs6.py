@@ -1,33 +1,42 @@
+"""
+Tazi has a tree with n nodes, the root node is node 1, and each node of the tree is red or black. 
+She wants to know how many nodes have subtrees that contain both red and black dots.
+"""
+
 import sys
-sys.setrecursionlimit(10**6)
+sys.setrecursionlimit(1_000_000)
+input = sys.stdin.readline
 
-def dfs(node, parent):
-    has_red = has_black = False
-    if colors[node] == 'R':
-        has_red = True
-    else:
-        has_black = True
-        
-    for neighbour in adj[node]:
-        if neighbour != parent:
-            r, b = dfs(neighbour, node)
-            if r : has_red = True
-            if b : has_black = True
-            
-    if has_black and has_red:
-        result[0] += 1
-        
-    return has_red, has_black
-
-n = int(input())
-colors = input().strip()
-edges = [list(map(int, input().split())) for _ in range(n-1)]
-
-adj = [[] for _ in range(n)]
-for u, v in edges:
-    adj[u-1].append(v-1)
-    adj[v-1].append(u-1)
+def main():
+    n = int(input().strip())
+    color = input().strip()
     
-result = [0]
-dfs(0, -1)
-print(result[0])
+    adj = [[] for _ in range(n+1)]
+    for _ in range(n - 1):
+        u, v = map(int, input().split())
+        adj[u].append(v)
+        adj[v].append(u)
+        
+    ans = 0
+    
+    def dfs(node, par):
+        nonlocal ans
+        has_red = (color[node - 1] == 'R')
+        has_black = not has_red
+        
+        for neighbour in adj[node]:
+            if neighbour == par:
+                continue
+            r, b = dfs(neighbour, node)
+            has_red |= r
+            has_black |= b
+        
+        if has_red and has_black:
+            ans += 1
+        return has_red, has_black
+    
+    dfs(1, 0)
+    print(ans)
+    
+if __name__ == "__main__":
+    main()
