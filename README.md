@@ -16,3 +16,15 @@ Including input/output processing, loop and string.
 ### 4. binary
 
 ### 5. recursion
+
+### 6. double pointer
+
+### 7. dfs
+
+### 8. bfs
+
+### 9. dynamic programming
+
+### 10. greedy
+
+### 11. union find
