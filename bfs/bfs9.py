@@ -14,21 +14,30 @@ def main():
     genQ = deque(req)
     
     while carQ and genQ:
-        K = carQ.popleft()
-        attempts = len(genQ)
-        fed = False
+        K = carQ[0]
+        need = genQ[0]
         
-        for _ in range(attempts):
-            need = genQ[0]
-            if need <= K:
-                total = 0
-                while genQ and total + genQ[0] <= K:
-                    total += genQ.popleft()
-                fed = True
-                break
-            else:
-                genQ.rotate(-1)
+        if K == need:
+            carQ.popleft()
+            genQ.popleft()
+        elif K > need:
+            total = 0
+            count = 0
+            for val in genQ:
+                if total + val <= K:
+                    total += val
+                    count += 1
+                else:
+                    break
+            
+            for _ in range(count):
+                genQ.popleft()
+            carQ.popleft()
+        else:
+            genQ.rotate(-1)
     
     print(len(genQ))
-    
+
+if __name__ == "__main__":
+    main()
     
