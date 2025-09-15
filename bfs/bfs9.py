@@ -10,31 +10,28 @@ def main():
         print(-1)
         return
     
+    if any(x<1 or x>100 for x in cars+req):
+        print(-1)
+        return
+    
     carQ = deque(cars)
     genQ = deque(req)
     
     while carQ and genQ:
-        K = carQ[0]
-        need = genQ[0]
+        K = carQ.popleft()
+        attempts = len(genQ)
+        fed = False
         
-        if K == need:
-            carQ.popleft()
-            genQ.popleft()
-        elif K > need:
-            total = 0
-            count = 0
-            for val in genQ:
-                if total + val <= K:
-                    total += val
-                    count += 1
-                else:
-                    break
-            
-            for _ in range(count):
-                genQ.popleft()
-            carQ.popleft()
-        else:
-            genQ.rotate(-1)
+        for _ in range(attempts):
+            need = genQ[0]
+            if K >= need:
+                total = 0
+                while genQ and total + genQ[0] <= K:
+                    total += genQ.popleft()
+                fed = True
+                break
+            else:
+                genQ.rotate(-1)
     
     print(len(genQ))
 
