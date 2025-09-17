@@ -21,7 +21,7 @@ def min_optimizers(pvs):
     
     for i in range(n):
         if pvs[i] == i and not covered[i]:
-            if i+1<n and p[i+1] == 0 and not has_opt[i+1]:
+            if i+1<n and pvs[i+1] == 0 and not has_opt[i+1]:
                 has_opt[i+1] = True
                 ans += 1
                 covered[i] = True

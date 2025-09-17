@@ -22,18 +22,20 @@
 
 def max_revenue(n, K, revenues, manpowers):
     ans = 0
-    cur_rev = 0
-    cur_man = 0
+    sum_rev = 0
+    sum_man = 0
     left = 0
     
     for right in range(n):
-        cur_rev += revenues[right]
-        cur_man = manpowers[right]
-        while cur_man > K:
-            cur_rev -= revenues[left]
-            cur_man -= manpowers[left]
+        sum_rev += revenues[right]
+        sum_man += manpowers[right]
+        
+        while left <= right and sum_man > K:
+            sum_rev -= revenues[left]
+            sum_man -= manpowers[left]
             left += 1
-        ans = max(ans, cur_rev)
+            
+        ans = max(ans, sum_rev)
     return ans
 
 if __name__ == "__main__":

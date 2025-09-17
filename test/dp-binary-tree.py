@@ -21,45 +21,50 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
-        
-def build_tree(nums):
-    if not nums or nums[0] != 'N':
-        return None, {}, {}
-    root = TreeNode(int(nums[0]))
+
+def build_tree(vals):
+    # 层序 + 'N' 表示空
+    if not vals or vals[0] == 'N':
+        return None
+    root = TreeNode(int(vals[0]))
     q = deque([root])
     i = 1
-    while i < len(nums):
+    while q and i < len(vals):
         node = q.popleft()
-        t = nums[i]
-        if i < len(nums) and t != 'N':
-            node.left = TreeNode(int(t))
+        # 左孩子
+        if i < len(vals) and vals[i] != 'N':
+            node.left = TreeNode(int(vals[i]))
             q.append(node.left)
         i += 1
-        if i < len(nums) and t != 'N':
-            node.right = TreeNode(int(t))
+        # 右孩子
+        if i < len(vals) and vals[i] != 'N':
+            node.right = TreeNode(int(vals[i]))
             q.append(node.right)
         i += 1
     return root
 
+def dfs(u):
+    if not u:
+        # (在本节点放基站, 本节点被覆盖无基站, 本节点未覆盖)
+        return (float('inf'), 0, 0)
+    L0, L1, L2 = dfs(u.left)
+    R0, R1, R2 = dfs(u.right)
+    # u 放基站
+    f0 = 1 + min(L0, L1, L2) + min(R0, R1, R2)
+    # u 被覆盖但不放基站（由某个孩子的基站覆盖）
+    f1 = min(
+        L0 + min(R0, R1),
+        R0 + min(L0, L1)
+    )
+    # u 未覆盖（交给父节点来覆盖）
+    f2 = L1 + R1
+    return f0, f1, f2
+
 def main():
-    nums = input().split()
-    root = build_tree(nums)
-    
-    def dfs(u):
-        if not u:
-            return float('inf'), 0, 0
-        L0, L1. L2 = dfs(u.left)
-        R0, R1, R2 = dfs(u.right)
-        
-        f0 = 1 + min(L0, L1, L2) + min(R0, R1, R2)
-        f1 = min(L0 + min(R0, R1), R0 + min(L0, L1))
-        f2 = L1 + R1
-        return f0, f1, f2
-    
+    vals = sys.stdin.readline().split()
+    root = build_tree(vals)
     f0, f1, _ = dfs(root)
-    ans = min(f0, f1)
-    
-    print(ans)
+    print(min(f0, f1))
 
 if __name__ == "__main__":
     main()

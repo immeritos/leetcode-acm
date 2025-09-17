@@ -26,7 +26,9 @@ def main():
     grid = [list(map(int, input().split())) for _ in range(m)]
     
     visited = [[False] * n for _ in range(m)]
-    dirs = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    dirs = [(-1, -1), (-1, 0), (-1, 1), 
+            (0, -1),            (0, 1), 
+            (1, -1), (1, 0), (1, 1)]
     count = 0
     dq = deque()
     
@@ -40,9 +42,9 @@ def main():
                     x, y = dq.popleft()
                     for dx, dy in dirs:
                         nx, ny = x + dx, y + dy
-                        if 0 <= nx <= and 0 <= ny < n:
+                        if 0 <= nx < m and 0 <= ny < n:
                             if grid[nx][ny] == 1 and not visited[nx][ny]:
-                                visited[nx][ny]
+                                visited[nx][ny] = True
                                 dq.append((nx, ny))
                                 
     k = count

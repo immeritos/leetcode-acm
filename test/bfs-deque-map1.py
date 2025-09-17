@@ -28,12 +28,14 @@
 """
 
 from collections import deque
+import sys
+input = sys.stdin.readline
 
 def min_steps(grid, ability):
     n, m = len(grid), len(grid[0])
-    
+    # 1) 找 start(高度=0) 与 target(最高点)    
     start = target = None
-    max_h = -1
+    max_h = -10**18
     for i in range(n):
         for j in range(m):
             h = grid[i][j]
@@ -44,8 +46,8 @@ def min_steps(grid, ability):
     
     vis = [[False]*m for _ in range(n)]
     q = deque()
-    q.append((*start, 0))
-    vis[start[0][start[1]]] = True
+    q.append((start[0], start[1], 0))
+    vis[start[0]][[start[1]]] = True
     
     dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     while q:

@@ -23,6 +23,7 @@ MAX_LIFE = 2**31 - 1
 
 def solve():
     input = sys.stdin.readline
+    
     n = int(input().strip())
     lives = list(map(int, input().split()))
     
@@ -35,17 +36,20 @@ def solve():
         life1, id1 = heapq.heappop(heap)
         life2, id2 = heapq.heappop(heap)
         if life1 == life2:
+            # 同归于尽：两人都不再入堆
             continue
+        # 生命值不同：较大值胜
         if life1 > life2:
-            life_big, id_big, life_smaint = life1, id1, life2
+            life_big, id_big, life_small = life1, id1, life2
         else:
-            life_big, id_big, life_smaint = life2, id2, life1
-        rem = life_big - life_smaint
+            life_big, id_big, life_small = life2, id2, life1
+        # 扣除与膨胀
+        rem = life_big - life_small
         new_life = rem*3
         if new_life > MAX_LIFE:
             new_life = MAX_LIFE
-        if new_life > 0:
-            heapq.heappush(heap, (new_life, id_big))
+            
+        heapq.heappush(heap, (new_life, id_big))
     
     if not heap:
         print(-1)

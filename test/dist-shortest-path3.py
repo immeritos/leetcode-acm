@@ -21,37 +21,62 @@
 
 import heapq
 
-def shortest_path(N, g, is_entrance, S, T):
-    INF = float('inf')
+INF = float('inf')
+def shortest_path(src, N, g):
     dist = [INF] * N
-    paths = [[] for _ in range(N)]
-
-    dist[S] = 0
-    paths[S] = [S]
-    pq = [(0, S)]  # (距离, 节点)
+    dist[src] = 0
+    pq = [(0, src)]  # (距离, 节点)
 
     while pq:
         d, u = heapq.heappop(pq)
-        if d > dist[u]:
+        if d != dist[u]:
             continue
         for v in range(N):
-            if g[u][v] == 0:
+            w = g[u][v]
+            if w == 0:
                 continue  # 不相邻
-            nd = d + g[u][v]
-            new_path = paths[u] + [v]
-            # 如果新的距离更短， 或距离相同但字典序更小，则更新
-            if nd < dist[v] or (nd == dist[v] and new_path < paths[v]):
+            nd = d + w
+            if nd < dist[v]:
                 dist[v] = nd
-                paths[v] = new_path
                 heapq.heappush(pq, (nd, v))
-    return paths[T]
+    return dist
 
-# 读入
-N = int(input())
-g = [list(map(int, input().split())) for _ in range(N)]
-is_entrance = list(map(int, input().split()))
-S, T = map(int, input().split())
+def main():
+    # 读入
+    N = int(input().strip())
+    g = [list(map(int, input().split())) for _ in range(N)]
+    is_ent = list(map(int, input().split()))
+    S, T = map(int, input().split())
+    
+    if is_ent[S] != 1 or is_ent[T] != 1:
+        print("NO PATH")
+        return 
+    
+    distS = shortest_path(S, N, g)
+    distT = shortest_path(T, N, g)
+    L = distS[T]
+    if L >= INF:
+        print("NO PATH")
+        return
+    
+    path = [S]
+    u = S
+    while u != T:
+        nxt = None
+        for v in range(N):
+            w = g[u][v]
+            if w == 0:
+                continue
+            if distS[u] + w + distT[v] == L:
+                nxt = v  # 第一个满足的就是编号最小
+                break
+        
+        if nxt is None:
+            print("NO PATH")
+            return
+        path.append(nxt)
+        u = nxt
+    print(*path)
 
-# 计算并输出
-res = shortest_path(N, g, is_entrance, S, T)
-print(' '.join(map(str, res)))
+if __name__ == "__main__":
+    main()

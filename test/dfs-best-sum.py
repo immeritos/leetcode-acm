@@ -27,33 +27,37 @@ node5 54
 
 import sys
 sys.setrecursionlimit(1_000_000)
+input = sys.stdin.readline
 
 def main():
     n = int(input())
     id_map = {}
-    names = []
-    weight = []
-    for _ in range(n):
-        line = input().split()
-        names.append(line[0])
-        weight.append(int(line[1]))
-        id_map[line[0]] = i
-        
+    names = [] * n
+    weight = [0] * n
+    for i in range(n):
+        name, w = input().split()
+        names[i] = name
+        weight[i] = int(w)
+        id_map[name] = i
+    
+    # 带权重的无向图    
     m = int(input().strip())
-    adj = [[] fot _ in range(n)]
+    adj = [[] for _ in range(n)]
     for _ in range(m):
         u, v = input().split()
         iu, iv = id_map[u], id_map[v]
-        adj[iu].append[iv]
-        adj[iv].append[iu]
+        adj[iu].append(iv)
+        adj[iv].append(iu)
         
     visited = [False] * n
-    best_sum = 0
+    best_sum = -1
     best_node = ""
     
     def dfs(u):
         visited[u] = True
+        # 分量内权重和
         total = weight[u]
+        # 当前分量内“权重最大节点”的下标
         max_idx = u
         for v in adj[u]:
             if not visited[v]:

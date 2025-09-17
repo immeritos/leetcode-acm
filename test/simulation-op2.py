@@ -76,7 +76,7 @@ def main():
     for _ in range(n):
         line = input().strip()
         if line.startswith("undo"):
-            data = line.splits(maxsplit=2)[2]
+            data = line.split(maxsplit=2)[2]
             segs = parse(data)
             if db:
                 db = subtract_intervals(db, segs)

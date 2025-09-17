@@ -51,8 +51,10 @@ def main():
             T = int(op[1])
             while T > 0 and pq:
                 p, ord_v, tid, rem = heapq.heappop(pq)
+                # 任务完成，不再入堆
                 if rem <= T:
                     T -= rem
+                # 任务未完成，重新入堆
                 else:
                     rem -= T
                     T = 0
@@ -61,7 +63,7 @@ def main():
                 if not pq:
                     print("idle")
                 else:
-                    print(pq[0][2])
+                    print(pq[0][2])   # 输出堆顶任务的 tid
 
 if __name__ == "__main__":
     main()

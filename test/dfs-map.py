@@ -26,12 +26,16 @@ dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 @lru_cache(None)
 def dfs(i, j):
-    best = 1
+    """返回从 (i,j) 出发的最长严格递减路径长度"""
+    best = 1  # 至少包含自己
     for dx, dy in dirs:
-        nx, ny = i + dx, j + dy
-        if 0 <= x < m and 0 <= y < n and matrix[nx][ny] < matrix[i][j]:
-            best = max(best, 1+dfs(x, y))
+        ni, nj = i + dx, j + dy
+        if 0 <= ni < m and 0 <= nj < n and matrix[ni][nj] < matrix[i][j]:
+            best = max(best, 1+dfs(ni, nj))
     return best
 
-ans = max(dfs(i, j) for i in range(m) for j in range(n))
+ans = 0
+for i in range(m):
+    for j in range(n):
+        ans = max(ans, dfs(i, j))
 print(ans)

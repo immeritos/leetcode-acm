@@ -50,7 +50,7 @@ def main():
         for j in range(k):
             if i>0 and abs(mp[i][j] - mp[i-1][j]) <= 1:
                 dp[i][j] = min(dp[i][j], dp[i-1][j] + mp[i][j])
-            if j>0 and abd(mp[i][j] - mp[i][j-1]) <= 1:
+            if j>0 and abs(mp[i][j] - mp[i][j-1]) <= 1:
                 dp[i][j] = min(dp[i][j], dp[i][j-1] + mp[i][j])
     
     ans = min(dp[i][k-1] for i in range(k))

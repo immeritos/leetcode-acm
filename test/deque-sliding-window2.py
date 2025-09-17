@@ -21,20 +21,27 @@ def best_station(cross, k):
     n = len(cross)
     if n<2 or k<1 or k>n:
         return -1
+    k = min(k, n-1)
+    
     dq = deque()
     res = []
     R = -1
+    
     for i in range(n-1):
         L = max(0, i+1-k)
         newR = min(n-1, i+k)
+        
         while R < newR:
             R += 1
+        # 1) 维持单调性：弹出所有 >= cross[R] 的尾部下标
             while dq and cross[dq[-1]] >= cross[R]:
                 dq.pop()
             dq.append(R)
+        # 2) 移除过期下标            
         while dq and dq[0] < L:
             dq.popleft()
-        res.append(dp[0])
+            
+        res.append(dq[0]) # 存下标，保证 dq[0] 最小且在窗口内
         
     return res
 

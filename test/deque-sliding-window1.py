@@ -22,25 +22,29 @@ i+1<=j<=min(n-1,i+K)
 """
 import sys
 from collections import deque
+input = sys.stdin.readline
 
 def max_score(node_scores, k):
     n = len(node_scores)
     dp = [-10**18] * n
     dp[0] = node_scores[0]
     
-    dq = deque([0])
+    dq = deque([0]) # 存下标，保证 dp[dq[0]] 最大且在窗口内
     
     for i in range(1, n):
+        # 1) 移除过期下标        
         while dq and dq[0] < i - k:
             dq.popleft()
+       # 2) 用队首完成转移
         dp[i] = dp[dq[0]] + node_scores[i]
-        while dq and dp[dq[-1]] <= dq[i]:
+        # 3) 维持单调性：弹出所有 <= dp[i] 的尾部下标
+        while dq and dp[dq[-1]] <= dp[i]:
             dq.pop()
         dq.append(i)
     
     return dp[-1]
 
-if __name__ == "__main__"":
+if __name__ == "__main__":
     K = int(input())
     n = int(input())
     scores = list(map(int, input().split()))

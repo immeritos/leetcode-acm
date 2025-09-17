@@ -22,48 +22,67 @@ E00
 """
 
 from collections import deque
+import sys
+input = sys.stdin.readline
 
 def shortest_path(grid):
     m, n = len(grid), len(grid[0])
     dirs = [(-1, 0), (1,0), (0, -1), (0, 1)]
+
+    # 1) 收集起点、终点、虫洞    
     holes = []
+    sx = sy = tx = ty = -1
     for i in range(m):
         for j in range(n):
-            if grid[i][j] == "2":
+            c = grid[i][j]
+            if c == '2':
                 holes.append((i, j))
-            elif gird[i][j] == "S":
+            elif c == 'S':
                 sx, sy = i, j
+            elif c == 'E':
+                tx, ty = i, j
+
+    # 2) 按出现顺序两两配对虫洞（(0,1), (2,3), ...）
     teleport = {}
+    if len(holes) % 2 == 2:
+        holes.pop()
     for i in range(0, len(holes), 2):
         a, b = holes[i], holes[i+1]
         teleport[a] = b
         teleport[b] = a
-        
-    vis = [[False]*n for _ in range(m)]
+    
+    INF = 10**18    
+    dist = [[INF]*n for _ in range(m)]
     q = deque()
-    q.append((sx, sy, 0))
-    vis[sx][sy] = True
+    q.append((sx, sy))
+    dist[sx][sy] = 0
     
     while q:
-        x, y, d = q.popleft()
-        if grid[x][y] == 'E':
+        x, y = q.popleft()
+        d = dist[x][y]
+
+        # 到达终点
+        if (x, y) == (tx, ty):
             return d
+        
+        # 3.1 四方向移动（代价 = 1）
         for dx, dy in dirs:
             nx, ny = x+dx, y+dy
-            if 0 <= nx < m and 0 <= ny < n and \
-                grid[nx][ny] != '1' and not vis[nx][ny]:
-                    vis[nx][ny] = True
-                    q.append((nx, ny, d+1))
-        
+            if 0 <= nx < m and 0 <= ny < n and grid[nx][ny] != '1':
+                if d + 1 < dist[nx][ny]:
+                    dist[nx][ny] = d + 1
+                    q.append((nx, ny))
+
+        # 3.2 虫洞传送（代价 = 0）        
         if grid[x][y] == '2':
-            tx, ty = teleport[(x, y)]
-            if not vis[tx][ty]:
-                vis[tx][ty] = True
-                q.append((tx, ty, d))
+            tx2, ty2 = teleport[(x, y)]
+            if d < dist[nx][ny]:
+                dist[nx][ny] = d
+                q.appendleft((tx2, ty2))  # 代价0 → 左端入队（更优先）
                 
     return -1
 
 if __name__ == "__main__":
     m, n = map(int, input().split())
-    gird = [list(input().strip()) for _ in range(m)]
+    grid = [list(input().strip()) for _ in range(m)]
     print(shortest_path(grid))

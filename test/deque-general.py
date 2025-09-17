@@ -36,28 +36,35 @@ def main():
     if any(x<1 or x>100 for x in cars+req):
         print(-1)
         return
-    
-    carQ = deque(cars)
+
     genQ = deque(req)
-    
-    while carQ and genQ:
-        K = carQ.popleft()
-        attempts = len(genQ)
-        fed = False
-        
-        for _ in range(attempts):
-            need = genQ[0]
-            if K >= need:
-                total = 0
-                while genQ and total + genQ[0] <= K:
-                    total += genQ.popleft()
-                fed = True
+
+    for K in cars:
+        if not genQ:
+            break
+
+        # 先在至多一整圈内寻找“能被这支车队喂到”的队首
+        found = False
+        for _ in range(len(genQ)):
+            if genQ[0] <= K:
+                found = True
                 break
-            else:
-                genQ.rotate(-1)
-    
+            genQ.rotate(-1)  # 让不满足的人排到队尾
+
+        if not found:
+            # 没人能被这支车队喂到 → 空车离开
+            continue
+
+        # 批量喂：从队首开始尽量多喂（累加前缀）
+        used = 0
+        while genQ and used + genQ[0] <= K:
+            used += genQ.popleft()
+
+        # 这支车队完成，换下一支（自然进入下一次 cars 遍历）
+
     print(len(genQ))
 
 if __name__ == "__main__":
     main()
+
     

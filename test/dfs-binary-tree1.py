@@ -21,25 +21,31 @@
 
 import sys
 sys.setrecursionlimit(1_000_000)
+input = sys.stdin.readline
 
-def dfs(i, f):
-    global ans
-    if i >= n or a[i] == 0:
-        return
-    cur = (a[i] - 1 + f) % 3
-    need = (b[i] - 1 - cur + 3) % 3
-    nf = (f + need) % 3
-    dfs(2*i + 1, nf)
-    dfs(2*i + 2, nf)
-
-def main():
-    global n, a, b, s
+def solve():
     n = int(input())
     a = list(map(int, input().split()))
-    b = list(map(int, input().split()))
+    b = list(map(int, input().split()))    
+    
     ans = 0
+    
+    def dfs(i, f):
+        """i: 数组下标；f: 祖先累计偏移(0..2)"""
+        nonlocal ans
+        if i >= n or a[i] == 0:
+            return
+        
+        cur = ((a[i] - 1) + f) % 3          # 当前实际颜色(0..2)
+        tgt = (b[i] - 1) % 3                # 目标颜色(0..2) —— 题目保证存在节点时 b[i]∈{1,2,3}
+        need = (tgt - cur) % 3              # 需在本节点再按的次数(0/1/2)
+        ans += need
+        nf = (f + need) % 3                 # 传给子树的新偏移
+        dfs(2*i + 1, nf)
+        dfs(2*i + 2, nf)
+    
     dfs(0, 0)
     print(ans)
-    
+
 if __name__ == "__main":
-    main()
+    solve()

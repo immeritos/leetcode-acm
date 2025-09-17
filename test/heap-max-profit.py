@@ -25,7 +25,7 @@ import heapq
 input = sys.stdin.readline
 
 def max_profit(k, m, cost, profit):
-    items = sorted(zip(cost, zip), key=lambda x: x[0])
+    items = sorted(zip(cost, profit), key=lambda x: x[0])
     n = len(items)
     
     money = m
@@ -34,22 +34,26 @@ def max_profit(k, m, cost, profit):
     i = 0
     
     for _ in range(k):
+        # 把当前资金能买的都放进堆（按利润）
         while i < n and items[i][0] <= money:
             heapq.heappush(max_heap, -items[i][1])
             i += 1
             
-            if not max_heap:
+            if not max_heap:  # 没东西可以买了
                 break
 
-            p = -heap.heappop(max_heap)
+            # 选择利润最大的一个
+            p = -heapq.heappop(max_heap)
             money += p
             total += p
             
-    reutrn total
-    
-k = int(input().strip())
-m = int(input().strip())
-cost = list(map(int, input().strip().split()))
-profit = list(map(int, input().strip().split()))
+    return total
 
-print(max_profit(k, m, cost, profit))
+if __name__ == "__main__":
+
+    k = int(input().strip())
+    m = int(input().strip())
+    cost = list(map(int, input().strip().split()))
+    profit = list(map(int, input().strip().split()))
+
+    print(max_profit(k, m, cost, profit))

@@ -1,5 +1,5 @@
 """
-给定一个整数数组arrayarray, 代表一系列时间点上的信号强度值。请在这些时间点中找出一个波峰区间 [i,j](其中i<=j), 满足以下两个连续阶段：
+给定一个整数数组array, 代表一系列时间点上的信号强度值。请在这些时间点中找出一个波峰区间 [i,j](其中i<=j), 满足以下两个连续阶段：
 
     区间前半段是单调非递减
     区间后半段是单调非递增
@@ -19,24 +19,32 @@
 """
 def max_peak_diff(array):
     n = len(array)
+    if n==0:
+        return 0
+    
+    left = [0]*n
+    for i in range(n):
+        if i>0 and array[i-1] <= array[i]:
+            left[i] = left[i-1]
+        else:
+            left[i] = i
+    
+    right = [0]*n
+    right[-1] = n-1
+    for i in range(n-2, -1, -1):
+        if array[i] >= array[i+1]:
+            right[i] = right[i+1]
+        else:
+            right[i] = i
+    
     ans = 0
-
-    for mid in range(n):
-        L = mid
-        while L > 0 and array[L - 1] <= array[L]:
-            L -= 1
-
-        R = mid
-        while R + 1 < n and array[R] >= array[R + 1]:
-            R += 1
-
-        # 必须两边都扩展了，才是合法波峰
-        if L < mid and R > mid:
-            peak = array[mid]
-            low = min(array[L], array[R])
-            ans = max(ans, peak - low)
-
+    for i in range(n):
+        L, R = left[i], right[i]
+        if L < i and R > i:
+            ans = max(ans, array[i] - min(array[L], array[R]))
+            
     return ans
+            
 
 if __name__ == "__main__":
     m = int(input())

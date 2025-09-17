@@ -35,14 +35,14 @@ def main():
         u = -1
         minDist = INF
         for i in range(total):
-            if not vis[i] and dis[i] < minDist:
+            if not vis[i] and dist[i] < minDist:
                 u = i
                 minDist = dist[i]
         if u == -1:
             break
         vis[u] = True
         for v in range(total):
-            if not vis[v] and d[u][v] > 0 and dist[v] > dist[u] + dist[u][v]:
+            if not vis[v] and d[u][v] > 0 and dist[v] > dist[u] + d[u][v]:
                 dist[v] = dist[u] + d[u][v]
                 
     print(dist[m])

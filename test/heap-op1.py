@@ -43,7 +43,7 @@ import heapq
 
 def main():
     input = sys.stdin.readline
-    q = int(input())
+    q = int(input().strip())
     stack = []
     min_heap = []
     in_set = set()
